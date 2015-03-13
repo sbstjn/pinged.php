@@ -1,23 +1,28 @@
-# bePinged
+# Pinged.PHP
 
-Event logger for PHP
+Lightweight logging service written in PHP. Easily log events from other applications and servers using a simple HTTP interface.
 
 ## Usage
 
-### Development
+Pinged runs fine on the free Heroku stack using the free PostgreSQL add-on. Please make sure you have a correct configured `DATABASE_URL` config variable. For authenticating your logging requests, please add a config variable called `PINGED_AUTH` as well. 
 
-Create a `routes.php` with the following contents:
+### Database
 
-```php
-<?php
+Create the following PostgreSQL database in your heroku database:
 
-if (file_exists(__DIR__ . $_SERVER['REQUEST_URI']))
-  return false;
-else
-  include __DIR__ . '/index.php';
+```sql
+CREATE TABLE LOG (
+   ID         SERIAL PRIMARY KEY      NOT NULL,
+   TIME       timestamp without time zone DEFAULT now(),
+   CATEGORY   CHAR(50) NOT NULL,
+   ACTION     CHAR(50) NOT NULL,
+   KEY        CHAR(50) NOT NULL,
+   VALUE      CHAR(50) NOT NULL
+)
 ```
 
-Use PHP 5.4 built-in web server
+### Logging
 
 ```bash
-php -S localhost:8080 routes.php
+$ > curl http://pinged.herokuapp.com/category/action/key/value -H 'X-Pinged-Auth:YOUR_PINGED_AUTH_KEY'
+```

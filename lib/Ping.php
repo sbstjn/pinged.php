@@ -9,7 +9,10 @@ class Ping {
     header("Content-Length: 5");
     
     echo 'Pong!';
-    self::log('Connection Closed!');
+  }
+  
+  public static function auth() {
+    return $_SERVER['HTTP_X_PINGED_AUTH'] === getenv('PINGED_AUTH');
   }
   
   public static function log($msg) {
@@ -19,8 +22,10 @@ class Ping {
   public static function handle() {
     self::close();
     
-    new Ping\Event(Ping\Database::init(), function($id) {
-      self::log('Ping #' . $id);
-    });
+    if (self::auth()) {
+      new Ping\Event(Ping\Database::init(), function($id) {
+        self::log('Ping #' . $id);
+      });
+    }
   }
 }

@@ -20,7 +20,7 @@ class Event {
   }
   
   private function query() {
-    return 'INSERT INTO `asd` (' . implode('`, `', array_keys($this->data)) . "`) VALUES ('" . implode("', '", $this->data). "')";
+    return 'INSERT INTO log (' . implode(', ', array_keys($this->data)) . ") VALUES ('" . implode("', '", $this->data). "')";
   }
   
   private function parse() {
@@ -29,7 +29,8 @@ class Event {
   }
   
   private function save($callback) {
-    $callback($this->query());
-    //$callback(time());
+    $this->db->run($this->query());
+
+    $callback(time());
   }
 }
