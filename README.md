@@ -1,4 +1,5 @@
 # Pinged.PHP
+![https://travis-ci.org/sbstjn/pinged.php.svg](https://travis-ci.org/sbstjn/pinged.php.svg)
 
 Lightweight logging service written in PHP. Easily log events from other applications and servers using a simple HTTP interface.
 
